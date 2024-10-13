@@ -27,19 +27,31 @@ exports.main = main;
 const http = __importStar(require("node:http"));
 const lib_1 = require("./lib");
 const port = 3232;
-const host = "localhost";
 function main() {
     const server = http.createServer((req, res) => {
         if (req.method === "get" && req.url === "/notes") {
             const notes = (0, lib_1.getNotes)();
-            res.statusCode = 200;
-            res.setHeader("contentType", "text/plain");
+            res.writeHead(200, { "content-type": "application/json" });
             res.end(JSON.stringify(notes));
         }
         if (req.method === "post" && req.url === "/notes") {
+            let body = "";
+            req.on("data", (chunk) => {
+                body += chunk.toString();
+            });
+            req.on("end", () => {
+                const note = JSON.parse(body);
+                const result = (0, lib_1.addNote)(note);
+                res.writeHead(201, { "content-type": "application/json" });
+                res.end(JSON.stringify(result));
+            });
+        }
+        else {
+            res.writeHead(404, { "content-type": "text/plain" });
+            res.end("Not found");
         }
     });
-    server.listen(port, host, () => {
-        console.log(`Server is running on http://${host}:${port}`);
+    server.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
     });
 }
