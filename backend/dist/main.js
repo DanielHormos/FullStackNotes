@@ -30,10 +30,14 @@ const port = 3232;
 const host = "localhost";
 function main() {
     const server = http.createServer((req, res) => {
-        res.statusCode = 200;
-        res.setHeader("contentType", "text/plain");
-        const responsText = (0, lib_1.getResponseText)();
-        res.end(responsText);
+        if (req.method === "get" && req.url === "/notes") {
+            const notes = (0, lib_1.getNotes)();
+            res.statusCode = 200;
+            res.setHeader("contentType", "text/plain");
+            res.end(JSON.stringify(notes));
+        }
+        if (req.method === "post" && req.url === "/notes") {
+        }
     });
     server.listen(port, host, () => {
         console.log(`Server is running on http://${host}:${port}`);
