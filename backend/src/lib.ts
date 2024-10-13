@@ -16,7 +16,7 @@ export function addNote(note: { content: string }): Note {
   return newNote;
 }
 
-export function getNotes() {
+export function getNotes(): Note[] {
   return notes;
 }
 
