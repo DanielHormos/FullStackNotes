@@ -1,3 +1,24 @@
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const response = await fetch("http://localhost:3232/notes");
+    console.log("Response: ", response);
+
+    if (!response.ok)
+      throw new Error(
+        `Network response was not ok, status: ${response.status}`
+      );
+
+    const notes = await response.json();
+    console.log("Notes data: ", notes);
+
+    if (Array.isArray(notes)) {
+      notes.forEach(displayNote);
+    } else console.error("Error: Notes is not an array", notes);
+  } catch (error) {
+    console.error("Fetch error: ", error);
+  }
+});
+
 document
   .getElementById("noteForm")
   ?.addEventListener("submit", async (event) => {
