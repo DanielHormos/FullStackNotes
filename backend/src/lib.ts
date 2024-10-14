@@ -3,12 +3,7 @@ type Note = {
   content: string;
 };
 
-let notes: Note[] = [
-  {
-    id: 1,
-    content: "HejsanHoppsan",
-  },
-];
+let notes: Note[] = [];
 
 export function addNote(note: { content: string }): Note {
   const newNote = { id: notes.length + 1, content: note.content };
@@ -18,8 +13,4 @@ export function addNote(note: { content: string }): Note {
 
 export function getNotes(): Note[] {
   return notes;
-}
-
-export function getResponseText(): string {
-  return "Response message fron lib.ts file";
 }
